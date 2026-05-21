@@ -764,6 +764,74 @@ tai_khoan_2@gmail.com|mat_khau_2</pre
         );
       }
 
+      function parseMultipleJsonDocuments(text) {
+        const docs = [];
+        let start = -1;
+        let depth = 0;
+        let inString = false;
+        let escaped = false;
+
+        for (let i = 0; i < text.length; i++) {
+          const ch = text[i];
+
+          if (inString) {
+            if (escaped) {
+              escaped = false;
+            } else if (ch === "\\") {
+              escaped = true;
+            } else if (ch === '"') {
+              inString = false;
+            }
+            continue;
+          }
+
+          if (ch === '"') {
+            inString = true;
+            continue;
+          }
+
+          if (ch === "{" || ch === "[") {
+            if (depth === 0) {
+              const betweenDocs = text.slice(
+                docs.length ? docs[docs.length - 1].end : 0,
+                i,
+              );
+              if (betweenDocs.trim()) {
+                throw new Error("Unexpected text between JSON sessions.");
+              }
+              start = i;
+            }
+            depth++;
+            continue;
+          }
+
+          if (ch === "}" || ch === "]") {
+            depth--;
+            if (depth < 0) {
+              throw new Error("Unexpected JSON closing bracket.");
+            }
+            if (depth === 0 && start !== -1) {
+              docs.push({
+                end: i + 1,
+                value: JSON.parse(text.slice(start, i + 1)),
+              });
+              start = -1;
+            }
+          }
+        }
+
+        if (depth !== 0 || inString) {
+          throw new Error("Incomplete JSON session.");
+        }
+
+        const tail = text.slice(docs.length ? docs[docs.length - 1].end : 0);
+        if (tail.trim()) {
+          throw new Error("Unexpected text after JSON sessions.");
+        }
+
+        return docs.map((doc) => doc.value);
+      }
+
       function normalizeFallbackPlan(value) {
         const text = String(value || "")
           .trim()
@@ -836,6 +904,14 @@ tai_khoan_2@gmail.com|mat_khau_2</pre
         try {
           data = JSON.parse(text);
         } catch (e) {
+          try {
+            const docs = parseMultipleJsonDocuments(text);
+            if (docs.length > 1) {
+              return docs.flatMap((doc) => (Array.isArray(doc) ? doc : [doc]));
+            }
+          } catch (multiError) {
+            // Keep the original JSON.parse message for malformed single pastes.
+          }
           throw new Error(`JSON không đúng định dạng: ${e.message}`);
         }
 
