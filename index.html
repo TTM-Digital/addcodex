@@ -1,1298 +1,1035 @@
 <!doctype html>
 <html lang="vi" class="h-full">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TTM Digital - ChatGPT to 9router Converter</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              brand: {
-                50: "#f5f3ff",
-                100: "#e0e7ff",
-                500: "#6366f1",
-                600: "#4f46e5",
-                700: "#4338ca",
-                900: "#312e81",
-              },
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TTM Digital - ChatGPT to 9router Converter</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: "#f5f3ff",
+              100: "#e0e7ff",
+              500: "#6366f1",
+              600: "#4f46e5",
+              700: "#4338ca",
+              900: "#312e81",
             },
           },
         },
-      };
-    </script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        font-family: "Outfit", sans-serif;
-      }
-      /* Custom scrollbar for slate panel */
-      ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: rgba(30, 41, 59, 0.5);
-      }
-      ::-webkit-scrollbar-thumb {
-        background: rgba(99, 102, 241, 0.3);
-        border-radius: 3px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: rgba(99, 102, 241, 0.6);
-      }
-    </style>
-  </head>
-  <body
-    class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white"
-  >
-    <!-- Header / Navbar -->
-    <header
-      class="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50"
-    >
-      <div
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
-      >
-        <div class="flex items-center space-x-3">
-          <!-- Circular shift icon -->
-          <div
-            class="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20"
-          >
-            <svg
-              class="h-5 w-5 text-white animate-pulse"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-              />
-            </svg>
-          </div>
-          <div>
-            <h1
-              class="text-lg font-bold tracking-tight bg-gradient-to-r from-indigo-200 via-indigo-400 to-violet-400 bg-clip-text text-transparent"
-            >
-              TTM Digital
-            </h1>
-            <p class="text-xs text-slate-400 font-medium">
-              ChatGPT Session &rarr; 9router
-            </p>
-          </div>
-        </div>
+      },
+    };
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Thư viện tạo TOTP -->
+  <script src="https://unpkg.com/otpauth/dist/otpauth.umd.min.js"></script>
+  <style>
+    body {
+      font-family: "Outfit", sans-serif;
+    }
 
-        <div class="flex items-center space-x-4">
-          <span
-            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-          >
-            <span
-              class="h-2 w-2 rounded-full bg-emerald-400 mr-2 animate-ping"
-            ></span>
-            100% Cục bộ & Bảo mật
-          </span>
+    /* Custom scrollbar for slate panel */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(30, 41, 59, 0.5);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.3);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.6);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+  <!-- Header / Navbar -->
+  <header class="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <!-- Circular shift icon -->
+        <div
+          class="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <svg class="h-5 w-5 text-white animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+        </div>
+        <div>
+          <h1
+            class="text-lg font-bold tracking-tight bg-gradient-to-r from-indigo-200 via-indigo-400 to-violet-400 bg-clip-text text-transparent">
+            TTM Digital
+          </h1>
+          <p class="text-xs text-slate-400 font-medium">
+            ChatGPT Session &rarr; 9router
+          </p>
         </div>
       </div>
-    </header>
 
-    <!-- Main Content Container -->
-    <main
-      class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col space-y-6"
-    >
-      <!-- Description Banner -->
-      <div
-        class="bg-gradient-to-r from-slate-900 to-slate-950 border border-slate-900 rounded-2xl p-6 relative overflow-hidden shadow-xl"
-      >
-        <div
-          class="absolute -right-16 -top-16 w-48 h-48 bg-indigo-500/5 rounded-full blur-3xl"
-        ></div>
-        <div
-          class="absolute -left-16 -bottom-16 w-48 h-48 bg-violet-500/5 rounded-full blur-3xl"
-        ></div>
-
-        <h2 class="text-2xl font-bold text-slate-100 sm:text-3xl">
-          Công cụ chuyển đổi cấu hình 9router
-        </h2>
-        <p
-          class="mt-2 text-slate-400 max-w-3xl text-sm sm:text-base leading-relaxed"
-        >
-          Hỗ trợ trích xuất access token từ JSON Session ChatGPT và tự động
-          chuyển đổi sang cấu hình tài khoản của 9router. Hoạt động hoàn toàn
-          trên trình duyệt của bạn, không gửi token đi bất kỳ đâu.
-        </p>
+      <div class="flex items-center space-x-4">
+        <span
+          class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="h-2 w-2 rounded-full bg-emerald-400 mr-2 animate-ping"></span>
+          100% Cục bộ & Bảo mật
+        </span>
       </div>
+    </div>
+  </header>
 
-      <!-- Tab Selector Component -->
-      <div class="flex border-b border-slate-900">
-        <button
-          id="tab-create-btn"
-          onclick="switchTab('create')"
-          class="py-3 px-6 font-semibold text-sm border-b-2 border-indigo-500 text-indigo-400 focus:outline-none transition duration-150"
-        >
-          Tạo file mới
-          <span class="block text-xs font-normal text-slate-500"
-            >Xuất file 9router từ session</span
-          >
-        </button>
-        <button
-          id="tab-merge-btn"
-          onclick="switchTab('merge')"
-          class="py-3 px-6 font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 focus:outline-none transition duration-150"
-        >
-          Thêm vào file có sẵn
-          <span class="block text-xs font-normal text-slate-500"
-            >Gộp session vào file cũ</span
-          >
-        </button>
-      </div>
+  <!-- Main Content Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col space-y-6">
+    <!-- Description Banner -->
+    <div
+      class="bg-gradient-to-r from-slate-900 to-slate-950 border border-slate-900 rounded-2xl p-6 relative overflow-hidden shadow-xl">
+      <div class="absolute -right-16 -top-16 w-48 h-48 bg-indigo-500/5 rounded-full blur-3xl"></div>
+      <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-violet-500/5 rounded-full blur-3xl"></div>
 
-      <!-- Working Area Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <!-- Left Column: Inputs -->
-        <div class="lg:col-span-5 space-y-6">
-          <!-- Tab 1 Panel (Create) -->
-          <div id="panel-create" class="space-y-6">
-            <div
-              class="bg-slate-900/40 border border-slate-900 rounded-2xl p-6 space-y-4"
-            >
-              <div class="flex items-center justify-between">
-                <h3
-                  class="font-semibold text-slate-200 text-sm tracking-wider uppercase"
-                >
-                  Dán JSON Session
-                </h3>
-                <div class="flex space-x-2">
-                  <button
-                    onclick="loadSampleData()"
-                    class="px-3 py-1 text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-lg hover:bg-indigo-500/20 transition duration-150"
-                  >
-                    Dữ liệu mẫu
-                  </button>
-                  <button
-                    onclick="clearInput()"
-                    class="px-3 py-1 text-xs font-medium bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition duration-150"
-                  >
-                    Xóa
-                  </button>
-                </div>
-              </div>
+      <h2 class="text-2xl font-bold text-slate-100 sm:text-3xl">
+        Công cụ chuyển đổi cấu hình 9router
+      </h2>
+      <p class="mt-2 text-slate-400 max-w-3xl text-sm sm:text-base leading-relaxed">
+        Hỗ trợ trích xuất access token từ JSON Session ChatGPT và tự động
+        chuyển đổi sang cấu hình tài khoản của 9router. Hoạt động hoàn toàn
+        trên trình duyệt của bạn, không gửi token đi bất kỳ đâu.
+      </p>
+    </div>
 
-              <div class="relative">
-                <textarea
-                  id="session-input"
-                  oninput="processInput()"
-                  spellcheck="false"
-                  autocomplete="off"
-                  placeholder="Dán JSON session hoặc định dạng: email|password|2fa..."
-                  class="w-full h-80 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150 placeholder-slate-600 resize-none"
-                ></textarea>
-                <div
-                  id="validation-indicator"
-                  class="absolute bottom-3 right-3 text-xs px-2 py-1 rounded bg-slate-900 text-slate-500 font-mono"
-                >
-                  Trống
-                </div>
-              </div>
+    <!-- Tab Selector Component -->
+    <div class="flex border-b border-slate-900">
+      <button id="tab-auto-btn" onclick="switchTab('auto')"
+        class="py-3 px-6 font-semibold text-sm border-b-2 border-indigo-500 text-indigo-400 focus:outline-none transition duration-150">
+        Get Session API
+        <span class="block text-xs font-normal text-slate-500">Từ TK/MK/2FA</span>
+      </button>
+      <button id="tab-create-btn" onclick="switchTab('create')"
+        class="py-3 px-6 font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 focus:outline-none transition duration-150">
+        Tạo file mới
+        <span class="block text-xs font-normal text-slate-500">Xuất file 9router từ session</span>
+      </button>
+      <button id="tab-merge-btn" onclick="switchTab('merge')"
+        class="py-3 px-6 font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 focus:outline-none transition duration-150">
+        Thêm vào file có sẵn
+        <span class="block text-xs font-normal text-slate-500">Gộp session vào file cũ</span>
+      </button>
+    </div>
 
-              <!-- JSON Parse Error Alert -->
-              <div
-                id="error-alert"
-                class="hidden p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-mono leading-relaxed"
-              ></div>
-            </div>
-          </div>
-
-          <!-- Tab 2 Panel (Merge) -->
-          <div id="panel-merge" class="hidden space-y-6">
-            <!-- Drop Zone for old backup file -->
-            <div
-              class="bg-slate-900/40 border border-slate-900 rounded-2xl p-6 space-y-4"
-            >
-              <h3
-                class="font-semibold text-slate-200 text-sm tracking-wider uppercase"
-              >
-                Bước 1: Chọn file backup 9router cũ
+    <!-- Working Area Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Left Column: Inputs -->
+      <div class="lg:col-span-5 space-y-6">
+        <!-- Tab 1 Panel (Auto Get Session API) -->
+        <div id="panel-auto" class="space-y-6">
+          <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm tracking-wider uppercase">
+                Tự động lấy Session JSON
               </h3>
+              <button onclick="clearAutoInput()"
+                class="px-3 py-1 text-xs font-medium bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition duration-150">
+                Xóa
+              </button>
+            </div>
+            
+            <div class="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-200 text-xs leading-relaxed">
+              Nhập danh sách tài khoản, công cụ sẽ gọi Proxy API để lấy Session. Sau khi lấy xong, bạn chỉ cần <strong>Copy toàn bộ JSON</strong> và dán vào tab <strong>Tạo file mới</strong> hoặc <strong>Thêm vào file có sẵn</strong>.
+            </div>
 
-              <div
-                id="drop-zone"
-                class="border-2 border-dashed border-slate-800 hover:border-indigo-500/50 rounded-xl p-6 text-center cursor-pointer transition duration-150 bg-slate-950/50"
-                onclick="document.getElementById('file-input').click()"
-                ondragover="event.preventDefault(); this.classList.add('border-indigo-500')"
-                ondragleave="this.classList.remove('border-indigo-500')"
-                ondrop="handleFileDrop(event)"
-              >
-                <input
-                  type="file"
-                  id="file-input"
-                  accept=".json"
-                  class="hidden"
-                  onchange="handleFileSelect(event)"
-                />
-                <div class="flex flex-col items-center space-y-2">
-                  <div class="p-3 bg-slate-900 rounded-xl text-slate-400">
-                    <svg
-                      class="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      />
-                    </svg>
-                  </div>
-                  <span class="text-xs text-slate-300 font-medium"
-                    ><span class="text-indigo-400">Nhấp để chọn</span> hoặc kéo
-                    thả file .json</span
-                  >
-                  <span class="text-[10px] text-slate-500"
-                    >File sao lưu backup cũ của 9router</span
-                  >
-                </div>
+            <div class="space-y-2">
+              <label class="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Proxy API URL</label>
+              <input id="proxy-url-input" type="text" value="https://ai.fakeopen.com/auth/login" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono text-slate-300 focus:border-indigo-500 focus:outline-none transition duration-150">
+              <label class="flex items-center space-x-2 cursor-pointer mt-2">
+                <input type="checkbox" id="use-cors-proxy" checked class="w-4 h-4 text-indigo-500 bg-slate-950 border-slate-800 rounded focus:ring-indigo-500 focus:ring-offset-slate-900">
+                <span class="text-xs text-slate-400">Sử dụng CORS Proxy (Khắc phục lỗi Failed to fetch)</span>
+              </label>
+            </div>
+
+            <div class="relative">
+              <textarea id="auto-input" spellcheck="false" autocomplete="off"
+                placeholder="Nhập tài khoản:&#10;Email|Password&#10;Email|Password|2FA_Secret"
+                class="w-full h-32 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150 placeholder-slate-600 resize-none"></textarea>
+            </div>
+
+            <button id="btn-start-auto" onclick="startAutoGetSession()"
+              class="w-full py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-indigo-600 to-violet-500 text-white hover:from-indigo-500 hover:to-violet-400 active:scale-95 shadow-lg shadow-indigo-500/20 transition duration-150 flex items-center justify-center space-x-2">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Tiến hành Get Session</span>
+            </button>
+
+            <!-- Progress UI -->
+            <div id="auto-progress-container" class="hidden space-y-2 mt-4">
+              <div class="flex justify-between text-xs font-medium text-slate-400">
+                <span id="auto-status-text">Đang xử lý: 0/0</span>
+                <span id="auto-percent">0%</span>
               </div>
+              <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                <div id="auto-progress-bar" class="bg-indigo-500 h-2.5 rounded-full transition-all duration-300"
+                  style="width: 0%"></div>
+              </div>
+            </div>
 
-              <!-- Uploaded File Badge -->
-              <div
-                id="file-status"
-                class="hidden p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between"
-              >
-                <div class="flex items-center space-x-3 overflow-hidden">
-                  <svg
-                    class="h-5 w-5 text-indigo-400 shrink-0"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                  <div class="overflow-hidden">
-                    <p
-                      id="file-name"
-                      class="text-xs font-semibold text-slate-200 truncate"
-                    >
-                      backup.json
-                    </p>
-                    <p id="file-detail" class="text-[10px] text-slate-500">
-                      0 accounts • max priority: 0
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onclick="clearUploadedFile()"
-                  class="p-1 text-slate-500 hover:text-rose-400 rounded transition duration-150"
-                >
-                  <svg
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+            <!-- Log list -->
+            <div id="auto-log-container"
+              class="hidden mt-4 bg-slate-950 border border-slate-900 rounded-xl p-3 max-h-32 overflow-y-auto space-y-2">
+            </div>
+
+            <!-- Result Box -->
+            <div id="auto-result-container" class="hidden mt-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Kết quả JSON (Sẵn sàng để copy)</span>
+                <button onclick="copyAutoResult()" class="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded text-xs font-medium hover:bg-emerald-500/30 transition">
+                  Copy toàn bộ
                 </button>
               </div>
+              <textarea id="auto-result-json" readonly
+                class="w-full h-48 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-emerald-400 focus:outline-none resize-none"></textarea>
             </div>
+          </div>
+        </div>
 
-            <!-- Input for new sessions -->
-            <div
-              class="bg-slate-900/40 border border-slate-900 rounded-2xl p-6 space-y-4"
-            >
-              <div class="flex items-center justify-between">
-                <h3
-                  class="font-semibold text-slate-200 text-sm tracking-wider uppercase"
-                >
-                  Bước 2: Dán Session mới
-                </h3>
-                <button
-                  onclick="clearMergeInput()"
-                  class="px-3 py-1 text-xs font-medium bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition duration-150"
-                >
+        <!-- Tab 2 Panel (Create) -->
+        <div id="panel-create" class="hidden space-y-6">
+          <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm tracking-wider uppercase">
+                Dán JSON Session
+              </h3>
+              <div class="flex space-x-2">
+                <button onclick="loadSampleData()"
+                  class="px-3 py-1 text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-lg hover:bg-indigo-500/20 transition duration-150">
+                  Dữ liệu mẫu
+                </button>
+                <button onclick="clearInput()"
+                  class="px-3 py-1 text-xs font-medium bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition duration-150">
                   Xóa
                 </button>
               </div>
-              <div class="relative">
-                <textarea
-                  id="session-merge-input"
-                  oninput="processMerge()"
-                  spellcheck="false"
-                  autocomplete="off"
-                  placeholder="Dán JSON session hoặc định dạng: email|password|2fa mới..."
-                  class="w-full h-60 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150 placeholder-slate-600 resize-none"
-                ></textarea>
-              </div>
-
-              <div
-                id="merge-error-alert"
-                class="hidden p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-mono"
-              ></div>
             </div>
-          </div>
 
-          <!-- Guide Accordion -->
-          <div
-            class="bg-slate-900/40 border border-slate-900 rounded-2xl overflow-hidden"
-          >
-            <button
-              onclick="toggleGuide()"
-              class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-900/60 transition duration-150 focus:outline-none"
-            >
-              <span
-                class="text-xs font-semibold uppercase tracking-wider text-slate-300"
-                >Hướng dẫn định dạng dán</span
-              >
-              <svg
-                id="guide-arrow"
-                class="h-4 w-4 text-slate-500 transform transition-transform duration-150"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            <div
-              id="guide-content"
-              class="hidden border-t border-slate-900 p-5 text-xs text-slate-400 space-y-3 leading-relaxed"
-            >
-              <div class="font-medium text-slate-300 underline">
-                Cách 1: Dán bằng Email | Password | 2FA (Nhanh)
+            <div class="relative">
+              <textarea id="session-input" oninput="processInput()" spellcheck="false" autocomplete="off"
+                placeholder="Dán JSON session tại đây..."
+                class="w-full h-80 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150 placeholder-slate-600 resize-none"></textarea>
+              <div id="validation-indicator"
+                class="absolute bottom-3 right-3 text-xs px-2 py-1 rounded bg-slate-900 text-slate-500 font-mono">
+                Trống
               </div>
-              <p>
-                Dán mỗi tài khoản trên 1 dòng với các phân tách bằng dấu gạch
-                đứng
-                <code class="bg-slate-950 px-1 py-0.5 rounded text-indigo-400"
-                  >|</code
-                >, dấu phẩy
-                <code class="bg-slate-950 px-1 py-0.5 rounded text-indigo-400"
-                  >,</code
-                >
-                hoặc tab. Ví dụ:
-              </p>
-              <pre
-                class="bg-slate-950 p-2 rounded text-[10px] font-mono text-slate-300"
-              >
-tai_khoan_1@gmail.com|mat_khau_1|2FA_KEY_1
-tai_khoan_2@gmail.com|mat_khau_2</pre
-              >
+            </div>
 
-              <div class="font-medium text-slate-300 mt-2 underline">
-                Cách 2: Dán bằng JSON Session ChatGPT
-              </div>
-              <p>
-                1. Đăng nhập vào trang
-                <a
-                  href="https://chatgpt.com"
-                  target="_blank"
-                  class="text-indigo-400 hover:underline"
-                  >chatgpt.com</a
-                >.
-              </p>
-              <p>
-                2. Mở link:
-                <a
-                  href="https://chatgpt.com/api/auth/session"
-                  target="_blank"
-                  class="text-indigo-400 hover:underline font-mono bg-slate-950 px-1 py-0.5 rounded"
-                  >api/auth/session</a
-                >.
-              </p>
-              <p>
-                3. Copy toàn bộ JSON dán vào đây (Hỗ trợ
-                <code class="bg-slate-950 px-1 py-0.5 rounded text-indigo-400"
-                  >{...}</code
-                >
-                hoặc mảng
-                <code class="bg-slate-950 px-1 py-0.5 rounded text-indigo-400"
-                  >[{...}, {...}]</code
-                >).
-              </p>
-
-              <div
-                class="p-2.5 rounded-lg bg-rose-500/5 border border-rose-500/10 text-rose-400 font-medium"
-              >
-                ⚠️ <strong>Cảnh báo bảo mật:</strong> Hãy bảo quản file backup
-                cẩn thận và chỉ sử dụng offline trên máy cá nhân để bảo vệ tài
-                khoản.
-              </div>
+            <!-- JSON Parse Error Alert -->
+            <div id="error-alert"
+              class="hidden p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-mono leading-relaxed">
             </div>
           </div>
         </div>
 
-        <!-- Right Column: Stats & Preview -->
-        <div class="lg:col-span-7 space-y-6">
-          <!-- Stat Cards -->
-          <div class="grid grid-cols-2 gap-4">
-            <div
-              class="bg-slate-900/40 border border-slate-900 rounded-2xl p-5 flex flex-col justify-between shadow-lg"
-            >
-              <span
-                class="text-xs font-semibold text-slate-500 uppercase tracking-wider"
-                >Tài khoản hợp lệ</span
-              >
-              <div class="flex items-baseline space-x-2 mt-2">
-                <span
-                  id="stat-valid"
-                  class="text-3xl font-bold text-emerald-400"
-                  >0</span
-                >
-                <span class="text-xs text-slate-500">tài khoản</span>
+        <!-- Tab 3 Panel (Merge) -->
+        <div id="panel-merge" class="hidden space-y-6">
+          <!-- Drop Zone for old backup file -->
+          <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-6 space-y-4">
+            <h3 class="font-semibold text-slate-200 text-sm tracking-wider uppercase">
+              Bước 1: Chọn file backup 9router cũ
+            </h3>
+
+            <div id="drop-zone"
+              class="border-2 border-dashed border-slate-800 hover:border-indigo-500/50 rounded-xl p-6 text-center cursor-pointer transition duration-150 bg-slate-950/50"
+              onclick="document.getElementById('file-input').click()"
+              ondragover="event.preventDefault(); this.classList.add('border-indigo-500')"
+              ondragleave="this.classList.remove('border-indigo-500')" ondrop="handleFileDrop(event)">
+              <input type="file" id="file-input" accept=".json" class="hidden" onchange="handleFileSelect(event)" />
+              <div class="flex flex-col items-center space-y-2">
+                <div class="p-3 bg-slate-900 rounded-xl text-slate-400">
+                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                </div>
+                <span class="text-xs text-slate-300 font-medium"><span class="text-indigo-400">Nhấp để chọn</span> hoặc
+                  kéo
+                  thả file .json</span>
+                <span class="text-[10px] text-slate-500">File sao lưu backup cũ của 9router</span>
               </div>
             </div>
-            <div
-              class="bg-slate-900/40 border border-slate-900 rounded-2xl p-5 flex flex-col justify-between shadow-lg"
-            >
-              <span
-                class="text-xs font-semibold text-slate-500 uppercase tracking-wider"
-                >Bỏ qua / Bị lỗi</span
-              >
-              <div class="flex items-baseline space-x-2 mt-2">
-                <span
-                  id="stat-skipped"
-                  class="text-3xl font-bold text-amber-500"
-                  >0</span
-                >
-                <span class="text-xs text-slate-500">dòng</span>
-              </div>
-            </div>
-          </div>
 
-          <!-- Preview Table Card -->
-          <div
-            class="bg-slate-900/40 border border-slate-900 rounded-2xl overflow-hidden shadow-lg flex flex-col h-[520px]"
-          >
-            <div
-              class="p-5 border-b border-slate-900 flex items-center justify-between"
-            >
-              <h3 class="font-bold text-slate-200 text-sm">
-                Danh sách tài khoản xem trước
-              </h3>
-              <span
-                class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-md font-mono"
-                >Định dạng 9router</span
-              >
-            </div>
-
-            <!-- Scrollable Table Container -->
-            <div class="flex-grow overflow-auto">
-              <table class="w-full text-left text-xs border-collapse">
-                <thead
-                  class="sticky top-0 bg-slate-950 z-10 border-b border-slate-900"
-                >
-                  <tr>
-                    <th
-                      class="p-3 text-slate-400 font-semibold w-12 text-center"
-                    >
-                      STT
-                    </th>
-                    <th class="p-3 text-slate-400 font-semibold">
-                      Tài khoản (Email)
-                    </th>
-                    <th
-                      class="p-3 text-slate-400 font-semibold w-16 text-center"
-                    >
-                      Plan
-                    </th>
-                    <th
-                      class="p-3 text-slate-400 font-semibold w-24 text-center"
-                    >
-                      Độ ưu tiên
-                    </th>
-                    <th class="p-3 text-slate-400 font-semibold">Hết hạn</th>
-                    <th
-                      class="p-3 text-slate-400 font-semibold w-16 text-center"
-                    >
-                      Thao tác
-                    </th>
-                  </tr>
-                </thead>
-                <tbody id="preview-tbody" class="divide-y divide-slate-900/60">
-                  <tr>
-                    <td colspan="6" class="p-8 text-center text-slate-500">
-                      Chưa có tài khoản nào được phân tích. Hãy dán JSON session
-                      ở cột bên trái.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Download Trigger Button Panel -->
-            <div
-              class="p-4 border-t border-slate-900 bg-slate-900/30 flex items-center justify-between"
-            >
-              <span
-                id="export-status"
-                class="text-xs text-slate-500 font-medium"
-                >Chờ nhập dữ liệu...</span
-              >
-              <button
-                id="download-btn"
-                disabled
-                onclick="triggerDownload()"
-                class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 text-slate-500 cursor-not-allowed transition duration-150 flex items-center space-x-2"
-              >
-                <svg
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                  />
+            <!-- Uploaded File Badge -->
+            <div id="file-status"
+              class="hidden p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+              <div class="flex items-center space-x-3 overflow-hidden">
+                <svg class="h-5 w-5 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                <span>Tải xuống JSON 9router</span>
+                <div class="overflow-hidden">
+                  <p id="file-name" class="text-xs font-semibold text-slate-200 truncate">
+                    backup.json
+                  </p>
+                  <p id="file-detail" class="text-[10px] text-slate-500">
+                    0 accounts • max priority: 0
+                  </p>
+                </div>
+              </div>
+              <button onclick="clearUploadedFile()"
+                class="p-1 text-slate-500 hover:text-rose-400 rounded transition duration-150">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
           </div>
+
+          <!-- Input for new sessions -->
+          <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm tracking-wider uppercase">
+                Bước 2: Dán Session mới
+              </h3>
+              <button onclick="clearMergeInput()"
+                class="px-3 py-1 text-xs font-medium bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition duration-150">
+                Xóa
+              </button>
+            </div>
+            <div class="relative">
+              <textarea id="session-merge-input" oninput="processMerge()" spellcheck="false" autocomplete="off"
+                placeholder="Dán JSON session tại đây..."
+                class="w-full h-60 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-150 placeholder-slate-600 resize-none"></textarea>
+            </div>
+
+            <div id="merge-error-alert"
+              class="hidden p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-mono">
+            </div>
+          </div>
+        </div>
+
+        <!-- Guide Accordion -->
+        <div class="bg-slate-900/40 border border-slate-900 rounded-2xl overflow-hidden">
+          <button onclick="toggleGuide()"
+            class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-900/60 transition duration-150 focus:outline-none">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Hướng dẫn định dạng dán</span>
+            <svg id="guide-arrow" class="h-4 w-4 text-slate-500 transform transition-transform duration-150" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div id="guide-content"
+            class="hidden border-t border-slate-900 p-5 text-xs text-slate-400 space-y-3 leading-relaxed">
+            <div class="font-medium text-slate-300 underline">
+              Dán bằng JSON Session ChatGPT
+            </div>
+            <p>
+              1. Đăng nhập vào trang
+              <a href="https://chatgpt.com" target="_blank" class="text-indigo-400 hover:underline">chatgpt.com</a>.
+            </p>
+            <p>
+              2. Mở link:
+              <a href="https://chatgpt.com/api/auth/session" target="_blank"
+                class="text-indigo-400 hover:underline font-mono bg-slate-950 px-1 py-0.5 rounded">api/auth/session</a>.
+            </p>
+            <p>
+              3. Copy toàn bộ JSON dán vào đây (Hỗ trợ
+              <code class="bg-slate-950 px-1 py-0.5 rounded text-indigo-400">{...}</code>
+              hoặc mảng
+              <code class="bg-slate-950 px-1 py-0.5 rounded text-indigo-400">[{...}, {...}]</code>).
+            </p>
+
+            <div class="p-2.5 rounded-lg bg-rose-500/5 border border-rose-500/10 text-rose-400 font-medium">
+              ⚠️ <strong>Cảnh báo bảo mật:</strong> Hãy bảo quản file backup
+              cẩn thận và chỉ sử dụng offline trên máy cá nhân để bảo vệ tài
+              khoản.
+            </div>
+          </div>
         </div>
       </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-900 bg-slate-950 py-6 mt-12">
-      <div
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500 space-y-1"
-      >
-        <p>
-          &copy; 2026 SessionShift Utility. Giữ toàn bộ quyền sở hữu trí tuệ.
-        </p>
-        <p class="font-medium">
-          Chạy hoàn toàn Client-Side cục bộ • Bảo mật thông tin tối đa
-        </p>
+      <!-- Right Column: Stats & Preview -->
+      <div class="lg:col-span-7 space-y-6">
+        <!-- Stat Cards -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-5 flex flex-col justify-between shadow-lg">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tài khoản hợp lệ</span>
+            <div class="flex items-baseline space-x-2 mt-2">
+              <span id="stat-valid" class="text-3xl font-bold text-emerald-400">0</span>
+              <span class="text-xs text-slate-500">tài khoản</span>
+            </div>
+          </div>
+          <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-5 flex flex-col justify-between shadow-lg">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Bỏ qua / Bị lỗi</span>
+            <div class="flex items-baseline space-x-2 mt-2">
+              <span id="stat-skipped" class="text-3xl font-bold text-amber-500">0</span>
+              <span class="text-xs text-slate-500">dòng</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview Table Card -->
+        <div
+          class="bg-slate-900/40 border border-slate-900 rounded-2xl overflow-hidden shadow-lg flex flex-col h-[520px]">
+          <div class="p-5 border-b border-slate-900 flex items-center justify-between">
+            <h3 class="font-bold text-slate-200 text-sm">
+              Danh sách tài khoản xem trước
+            </h3>
+            <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-md font-mono">Định dạng
+              9router</span>
+          </div>
+
+          <!-- Scrollable Table Container -->
+          <div class="flex-grow overflow-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="sticky top-0 bg-slate-950 z-10 border-b border-slate-900">
+                <tr>
+                  <th class="p-3 text-slate-400 font-semibold w-12 text-center">
+                    STT
+                  </th>
+                  <th class="p-3 text-slate-400 font-semibold">
+                    Tài khoản
+                  </th>
+                  <th class="p-3 text-slate-400 font-semibold w-16 text-center">
+                    Plan
+                  </th>
+                  <th class="p-3 text-slate-400 font-semibold w-24 text-center">
+                    Độ ưu tiên
+                  </th>
+                  <th class="p-3 text-slate-400 font-semibold">Hết hạn</th>
+                  <th class="p-3 text-slate-400 font-semibold w-16 text-center">
+                    Thao tác
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="preview-tbody" class="divide-y divide-slate-900/60">
+                <tr>
+                  <td colspan="6" class="p-8 text-center text-slate-500">
+                    Chưa có tài khoản nào được phân tích. Hãy dán JSON session
+                    ở cột bên trái.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Download Trigger Button Panel -->
+          <div class="p-4 border-t border-slate-900 bg-slate-900/30 flex items-center justify-between">
+            <span id="export-status" class="text-xs text-slate-500 font-medium">Chờ nhập dữ liệu...</span>
+            <button id="download-btn" disabled onclick="triggerDownload()"
+              class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 text-slate-500 cursor-not-allowed transition duration-150 flex items-center space-x-2">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Tải xuống JSON 9router</span>
+            </button>
+          </div>
+        </div>
       </div>
-    </footer>
+    </div>
+  </main>
 
-    <!-- Logic Script -->
-    <script>
-      let currentTab = "create";
-      let parsedConnections = [];
-      let uploadedBackupData = null;
-      let uploadedConnections = [];
-      let baseMaxPriority = 0;
+  <!-- Footer -->
+  <footer class="border-t border-slate-900 bg-slate-950 py-6 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500 space-y-1">
+      <p>
+        &copy; 2026 SessionShift Utility. Giữ toàn bộ quyền sở hữu trí tuệ.
+      </p>
+      <p class="font-medium">
+        Chạy hoàn toàn Client-Side cục bộ • Bảo mật thông tin tối đa
+      </p>
+    </div>
+  </footer>
 
-      const DEFAULT_FALLBACK_PLAN = "plus";
-      const DEFAULT_SETTINGS = {
-        theme: "dark",
-        isShared: false,
-        systemPrompt: "",
-      };
-      const TAB_ACTIVE_CLASS =
-        "py-3 px-6 font-semibold text-sm border-b-2 border-indigo-500 text-indigo-400 focus:outline-none transition duration-150";
-      const TAB_INACTIVE_CLASS =
-        "py-3 px-6 font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 focus:outline-none transition duration-150";
-      const DOWNLOAD_ENABLED_CLASS =
-        "px-5 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-indigo-600 to-violet-500 text-white hover:from-indigo-500 hover:to-violet-400 active:scale-95 shadow-lg shadow-indigo-500/20 cursor-pointer transition duration-150 flex items-center space-x-2";
-      const DOWNLOAD_DISABLED_CLASS =
-        "px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 text-slate-500 cursor-not-allowed transition duration-150 flex items-center space-x-2";
-      const VALID_INDICATOR_CLASS =
-        "absolute bottom-3 right-3 text-xs px-2 py-1 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-mono font-medium";
-      const EMPTY_INDICATOR_CLASS =
-        "absolute bottom-3 right-3 text-xs px-2 py-1 rounded bg-slate-900 text-slate-500 font-mono";
-      const ERROR_INDICATOR_CLASS =
-        "absolute bottom-3 right-3 text-xs px-2 py-1 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20 font-mono font-medium";
+  <!-- Logic Script -->
+  <script>
+    let currentTab = "auto";
+    let parsedConnections = [];
+    let uploadedBackupData = null;
+    let uploadedConnections = [];
+    let baseMaxPriority = 0;
+    let autoSkippedCount = 0;
+    const DEFAULT_FALLBACK_PLAN = "plus";
+    const DEFAULT_SETTINGS = {
+      theme: "dark",
+      isShared: false,
+      systemPrompt: "",
+    };
+    const TAB_ACTIVE_CLASS =
+      "py-3 px-6 font-semibold text-sm border-b-2 border-indigo-500 text-indigo-400 focus:outline-none transition duration-150";
+    const TAB_INACTIVE_CLASS =
+      "py-3 px-6 font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 focus:outline-none transition duration-150";
+    const DOWNLOAD_ENABLED_CLASS =
+      "px-5 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-indigo-600 to-violet-500 text-white hover:from-indigo-500 hover:to-violet-400 active:scale-95 shadow-lg shadow-indigo-500/20 cursor-pointer transition duration-150 flex items-center space-x-2";
+    const DOWNLOAD_DISABLED_CLASS =
+      "px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 text-slate-500 cursor-not-allowed transition duration-150 flex items-center space-x-2";
+    const VALID_INDICATOR_CLASS =
+      "absolute bottom-3 right-3 text-xs px-2 py-1 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-mono font-medium";
+    const EMPTY_INDICATOR_CLASS =
+      "absolute bottom-3 right-3 text-xs px-2 py-1 rounded bg-slate-900 text-slate-500 font-mono";
+    const ERROR_INDICATOR_CLASS =
+      "absolute bottom-3 right-3 text-xs px-2 py-1 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20 font-mono font-medium";
 
-      const $ = (id) => document.getElementById(id);
+    const $ = (id) => document.getElementById(id);
 
-      function switchTab(tab) {
-        currentTab = tab;
-        const createBtn = $("tab-create-btn");
-        const mergeBtn = $("tab-merge-btn");
-        const createPanel = $("panel-create");
-        const mergePanel = $("panel-merge");
+    function switchTab(tab) {
+      currentTab = tab;
+      const createBtn = $("tab-create-btn");
+      const mergeBtn = $("tab-merge-btn");
+      const autoBtn = $("tab-auto-btn");
 
-        if (tab === "create") {
-          createBtn.className = TAB_ACTIVE_CLASS;
-          mergeBtn.className = TAB_INACTIVE_CLASS;
-          createPanel.classList.remove("hidden");
-          mergePanel.classList.add("hidden");
-          processInput();
-        } else {
-          mergeBtn.className = TAB_ACTIVE_CLASS;
-          createBtn.className = TAB_INACTIVE_CLASS;
-          mergePanel.classList.remove("hidden");
-          createPanel.classList.add("hidden");
-          processMerge();
+      const createPanel = $("panel-create");
+      const mergePanel = $("panel-merge");
+      const autoPanel = $("panel-auto");
+
+      createBtn.className = TAB_INACTIVE_CLASS;
+      mergeBtn.className = TAB_INACTIVE_CLASS;
+      autoBtn.className = TAB_INACTIVE_CLASS;
+
+      createPanel.classList.add("hidden");
+      mergePanel.classList.add("hidden");
+      autoPanel.classList.add("hidden");
+
+      if (tab === "create") {
+        createBtn.className = TAB_ACTIVE_CLASS;
+        createPanel.classList.remove("hidden");
+        processInput();
+      } else if (tab === "merge") {
+        mergeBtn.className = TAB_ACTIVE_CLASS;
+        mergePanel.classList.remove("hidden");
+        processMerge();
+      } else if (tab === "auto") {
+        autoBtn.className = TAB_ACTIVE_CLASS;
+        autoPanel.classList.remove("hidden");
+      }
+    }
+
+    function toggleGuide() {
+      const content = $("guide-content");
+      const arrow = $("guide-arrow");
+      if (content.classList.contains("hidden")) {
+        content.classList.remove("hidden");
+        arrow.classList.add("rotate-180");
+      } else {
+        content.classList.add("hidden");
+        arrow.classList.remove("rotate-180");
+      }
+    }
+
+    function decodeBase64Url(str) {
+      try {
+        let base64 = str.replace(/-/g, "+").replace(/_/g, "/");
+        while (base64.length % 4) {
+          base64 += "=";
         }
+        return decodeURIComponent(escape(atob(base64)));
+      } catch (e) {
+        return atob(str.replace(/-/g, "+").replace(/_/g, "/"));
       }
+    }
 
-      function toggleGuide() {
-        const content = $("guide-content");
-        const arrow = $("guide-arrow");
-        if (content.classList.contains("hidden")) {
-          content.classList.remove("hidden");
-          arrow.classList.add("rotate-180");
-        } else {
-          content.classList.add("hidden");
-          arrow.classList.remove("rotate-180");
+    function decodeJwtExp(token) {
+      try {
+        if (!token) return null;
+        const parts = token.split(".");
+        if (parts.length !== 3) return null;
+        const decodedPayload = JSON.parse(decodeBase64Url(parts[1]));
+        if (decodedPayload && decodedPayload.exp) {
+          return decodedPayload.exp;
         }
+      } catch (e) {
+        // Invalid JWT format
       }
-
-      function decodeBase64Url(str) {
-        try {
-          let base64 = str.replace(/-/g, "+").replace(/_/g, "/");
-          while (base64.length % 4) {
-            base64 += "=";
-          }
-          return decodeURIComponent(escape(atob(base64)));
-        } catch (e) {
-          return atob(str.replace(/-/g, "+").replace(/_/g, "/"));
-        }
-      }
-
-      function decodeJwtExp(token) {
-        try {
-          if (!token) return null;
-          const parts = token.split(".");
-          if (parts.length !== 3) return null;
-          const decodedPayload = JSON.parse(decodeBase64Url(parts[1]));
-          if (decodedPayload && decodedPayload.exp) {
-            return decodedPayload.exp;
-          }
-        } catch (e) {
-          // Invalid JWT format
-        }
-        return null;
-      }
-      function hasPlusKeyword(arr) {
-        if (!Array.isArray(arr)) return false;
-        return arr.some((f) => {
-          const lf = String(f).toLowerCase();
-          return (
-            lf.includes("plus") ||
-            lf.includes("subscriber") ||
-            lf.includes("premium") ||
-            lf.includes("pro") ||
-            lf.includes("gpt4") ||
-            lf.includes("model_gpt4")
-          );
-        });
-      }
-
-      function decodeJwtPlan(token) {
-        try {
-          if (!token) return null;
-          const parts = token.split(".");
-          if (parts.length !== 3) return null;
-          const decodedPayload = JSON.parse(decodeBase64Url(parts[1]));
-
-          if (decodedPayload.plan) return decodedPayload.plan;
-          if (decodedPayload.plan_type) return decodedPayload.plan_type;
-          if (Array.isArray(decodedPayload.features)) {
-            if (hasPlusKeyword(decodedPayload.features)) return "plus";
-          }
-
-          const profile = decodedPayload["https://api.openai.com/profile"];
-          if (profile) {
-            if (profile.plan) return profile.plan;
-            if (Array.isArray(profile.features)) {
-              if (hasPlusKeyword(profile.features)) return "plus";
-            }
-          }
-
-          const featuresPaths = [
-            decodedPayload["https://api.openai.com/features"],
-            decodedPayload.features,
-            decodedPayload["features"],
-          ];
-
-          for (const features of featuresPaths) {
-            if (Array.isArray(features)) {
-              if (hasPlusKeyword(features)) return "plus";
-            }
-          }
-        } catch (e) {
-          console.error("Lỗi decode JWT plan:", e);
-        }
-        return null;
-      }
-
-      function formatDate(isoOrTs) {
-        if (!isoOrTs) return "N/A";
-        const date = new Date(
-          typeof isoOrTs === "number" ? isoOrTs * 1000 : isoOrTs,
-        );
-        if (isNaN(date.getTime())) return "N/A";
-
-        const yyyy = date.getFullYear();
-        const mm = String(date.getMonth() + 1).padStart(2, "0");
-        const dd = String(date.getDate()).padStart(2, "0");
-        const hh = String(date.getHours()).padStart(2, "0");
-        const min = String(date.getMinutes()).padStart(2, "0");
-
-        return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
-      }
-
-      function isJsonString(str) {
-        const trimmed = str.trim();
+      return null;
+    }
+    function hasPlusKeyword(arr) {
+      if (!Array.isArray(arr)) return false;
+      return arr.some((f) => {
+        const lf = String(f).toLowerCase();
         return (
-          (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
-          (trimmed.startsWith("[") && trimmed.endsWith("]"))
+          lf.includes("plus") ||
+          lf.includes("subscriber") ||
+          lf.includes("premium") ||
+          lf.includes("pro") ||
+          lf.includes("gpt4") ||
+          lf.includes("model_gpt4")
         );
-      }
+      });
+    }
 
-      function parseMultipleJsonDocuments(text) {
-        const docs = [];
-        let start = -1;
-        let depth = 0;
-        let inString = false;
-        let escaped = false;
+    function decodeJwtPlan(token) {
+      try {
+        if (!token) return null;
+        const parts = token.split(".");
+        if (parts.length !== 3) return null;
+        const decodedPayload = JSON.parse(decodeBase64Url(parts[1]));
 
-        for (let i = 0; i < text.length; i++) {
-          const ch = text[i];
+        if (decodedPayload.plan) return decodedPayload.plan;
+        if (decodedPayload.plan_type) return decodedPayload.plan_type;
+        if (Array.isArray(decodedPayload.features)) {
+          if (hasPlusKeyword(decodedPayload.features)) return "plus";
+        }
 
-          if (inString) {
-            if (escaped) {
-              escaped = false;
-            } else if (ch === "\\") {
-              escaped = true;
-            } else if (ch === '"') {
-              inString = false;
-            }
-            continue;
-          }
-
-          if (ch === '"') {
-            inString = true;
-            continue;
-          }
-
-          if (ch === "{" || ch === "[") {
-            if (depth === 0) {
-              const betweenDocs = text.slice(
-                docs.length ? docs[docs.length - 1].end : 0,
-                i,
-              );
-              if (betweenDocs.trim()) {
-                throw new Error("Unexpected text between JSON sessions.");
-              }
-              start = i;
-            }
-            depth++;
-            continue;
-          }
-
-          if (ch === "}" || ch === "]") {
-            depth--;
-            if (depth < 0) {
-              throw new Error("Unexpected JSON closing bracket.");
-            }
-            if (depth === 0 && start !== -1) {
-              docs.push({
-                end: i + 1,
-                value: JSON.parse(text.slice(start, i + 1)),
-              });
-              start = -1;
-            }
+        const profile = decodedPayload["https://api.openai.com/profile"];
+        if (profile) {
+          if (profile.plan) return profile.plan;
+          if (Array.isArray(profile.features)) {
+            if (hasPlusKeyword(profile.features)) return "plus";
           }
         }
 
-        if (depth !== 0 || inString) {
-          throw new Error("Incomplete JSON session.");
-        }
+        const featuresPaths = [
+          decodedPayload["https://api.openai.com/features"],
+          decodedPayload.features,
+          decodedPayload["features"],
+        ];
 
-        const tail = text.slice(docs.length ? docs[docs.length - 1].end : 0);
-        if (tail.trim()) {
-          throw new Error("Unexpected text after JSON sessions.");
-        }
-
-        return docs.map((doc) => doc.value);
-      }
-
-      function normalizeFallbackPlan(value) {
-        const text = String(value || "")
-          .trim()
-          .toLowerCase();
-        if (text === "team") return "team";
-        if (text === "enterprise") return "enterprise";
-        if (text === "free") return "free";
-        return "plus";
-      }
-
-      // Parse credentials formatted text (email|password|2fa or email,password,2fa, etc.)
-      function parseCredentialsLines(text, fallbackPlan = "plus") {
-        const lines = text.split("\n");
-        const parsed = [];
-        let skipped = 0;
-        const defaultPlan = normalizeFallbackPlan(fallbackPlan);
-
-        lines.forEach((line) => {
-          const trimmed = line.trim();
-          if (!trimmed) return;
-
-          // Split by |, comma, semicolon, tab, or colon
-          const parts = trimmed.split(/[|,;\t:]/).map((p) => p.trim());
-
-          if (parts.length >= 2) {
-            const email = parts[0];
-            const password = parts[1];
-            let twoFactorSecret = "";
-            let planValue = defaultPlan;
-
-            for (let i = 2; i < parts.length; i++) {
-              const val = parts[i];
-              if (!val) continue;
-              const lowerVal = val.toLowerCase();
-              if (lowerVal === 'free' || lowerVal === 'plus' || lowerVal === 'premium' || lowerVal === 'pro' || lowerVal === 'team' || lowerVal === 'enterprise') {
-                if (lowerVal === 'free') planValue = 'free';
-                else if (lowerVal === 'team') planValue = 'team';
-                else if (lowerVal === 'enterprise') planValue = 'enterprise';
-                else planValue = 'plus';
-              } else if (val.length > 0) {
-                twoFactorSecret = val;
-              }
-            }
-
-            // Accept any non-empty username/email
-            if (email.length > 0) {
-              parsed.push({
-                type: "credentials",
-                email: email,
-                password: password,
-                twoFactorSecret: twoFactorSecret,
-                plan: planValue,
-              });
-            } else {
-              skipped++;
-            }
-          } else {
-            skipped++;
+        for (const features of featuresPaths) {
+          if (Array.isArray(features)) {
+            if (hasPlusKeyword(features)) return "plus";
           }
-        });
+        }
+      } catch (e) {
+        console.error("Lỗi decode JWT plan:", e);
+      }
+      return null;
+    }
 
-        return { parsed, skipped };
+    function formatDate(isoOrTs) {
+      if (!isoOrTs) return "N/A";
+      const date = new Date(
+        typeof isoOrTs === "number" ? isoOrTs * 1000 : isoOrTs,
+      );
+      if (isNaN(date.getTime())) return "N/A";
+
+      const yyyy = date.getFullYear();
+      const mm = String(date.getMonth() + 1).padStart(2, "0");
+      const dd = String(date.getDate()).padStart(2, "0");
+      const hh = String(date.getHours()).padStart(2, "0");
+      const min = String(date.getMinutes()).padStart(2, "0");
+
+      return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+    }
+
+    function isJsonString(str) {
+      const trimmed = str.trim();
+      return (
+        (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
+        (trimmed.startsWith("[") && trimmed.endsWith("]"))
+      );
+    }
+
+    function parseMultipleJsonDocuments(text) {
+      const docs = [];
+      let start = -1;
+      let depth = 0;
+      let inString = false;
+      let escaped = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+
+        if (inString) {
+          if (escaped) {
+            escaped = false;
+          } else if (ch === "\\") {
+            escaped = true;
+          } else if (ch === '"') {
+            inString = false;
+          }
+          continue;
+        }
+
+        if (ch === '"') {
+          inString = true;
+          continue;
+        }
+
+        if (ch === "{" || ch === "[") {
+          if (depth === 0) {
+            const betweenDocs = text.slice(
+              docs.length ? docs[docs.length - 1].end : 0,
+              i,
+            );
+            if (betweenDocs.trim()) {
+              throw new Error("Unexpected text between JSON sessions.");
+            }
+            start = i;
+          }
+          depth++;
+          continue;
+        }
+
+        if (ch === "}" || ch === "]") {
+          depth--;
+          if (depth < 0) {
+            throw new Error("Unexpected JSON closing bracket.");
+          }
+          if (depth === 0 && start !== -1) {
+            docs.push({
+              end: i + 1,
+              value: JSON.parse(text.slice(start, i + 1)),
+            });
+            start = -1;
+          }
+        }
       }
 
-      // Clean & Extract input text as JSON array of sessions
-      function parseSessionsText(text) {
-        if (!text.trim()) return [];
+      if (depth !== 0 || inString) {
+        throw new Error("Incomplete JSON session.");
+      }
 
-        let data = null;
+      const tail = text.slice(docs.length ? docs[docs.length - 1].end : 0);
+      if (tail.trim()) {
+        throw new Error("Unexpected text after JSON sessions.");
+      }
+
+      return docs.map((doc) => doc.value);
+    }
+
+    function normalizeFallbackPlan(value) {
+      const text = String(value || "")
+        .trim()
+        .toLowerCase();
+      if (text === "team") return "team";
+      if (text === "enterprise") return "enterprise";
+      if (text === "free") return "free";
+      return "plus";
+    }
+
+    function parseSessionsText(text) {
+      if (!text.trim()) return [];
+
+      let data = null;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
         try {
-          data = JSON.parse(text);
-        } catch (e) {
-          try {
-            const docs = parseMultipleJsonDocuments(text);
-            if (docs.length > 1) {
-              return docs.flatMap((doc) => (Array.isArray(doc) ? doc : [doc]));
-            }
-          } catch (multiError) {
-            // Keep the original JSON.parse message for malformed single pastes.
+          const docs = parseMultipleJsonDocuments(text);
+          if (docs.length > 1) {
+            return docs.flatMap((doc) => (Array.isArray(doc) ? doc : [doc]));
           }
-          throw new Error(`JSON không đúng định dạng: ${e.message}`);
+        } catch (multiError) {
         }
-
-        if (Array.isArray(data)) {
-          return data;
-        } else if (typeof data === "object" && data !== null) {
-          return [data];
-        }
-        throw new Error(
-          "Dữ liệu JSON phải là một Object hoặc một Mảng các Object.",
-        );
+        throw new Error("Vui lòng dán JSON session hợp lệ.");
       }
 
-      function parseInputItems(text, fallbackPlan = DEFAULT_FALLBACK_PLAN) {
-        if (!isJsonString(text)) {
-          return {
-            isJson: false,
-            ...parseCredentialsLines(text, fallbackPlan),
-          };
-        }
-
-        const parsed = [];
-        let skipped = 0;
-        parseSessionsText(text).forEach((session) => {
-          if (session && session.accessToken) {
-            parsed.push(session);
-          } else {
-            skipped++;
-          }
-        });
-
-        return { isJson: true, parsed, skipped };
+      if (Array.isArray(data)) {
+        return data;
+      } else if (typeof data === "object" && data !== null) {
+        return [data];
       }
+      throw new Error(
+        "Dữ liệu JSON phải là một Object hoặc một Mảng các Object.",
+      );
+    }
 
-      function findPlanInObject(obj) {
-        if (!obj || typeof obj !== "object") return null;
+    function parseInputItems(text, fallbackPlan = DEFAULT_FALLBACK_PLAN) {
+      const parsed = [];
+      let skipped = 0;
+      parseSessionsText(text).forEach((session) => {
+        if (session && session.accessToken) {
+          parsed.push(session);
+        } else {
+          skipped++;
+        }
+      });
 
-        const queue = [obj];
-        const seen = new Set();
+      return { isJson: true, parsed, skipped };
+    }
 
-        while (queue.length > 0) {
-          const current = queue.shift();
-          if (seen.has(current)) continue;
-          seen.add(current);
+    function findPlanInObject(obj) {
+      if (!obj || typeof obj !== "object") return null;
 
-          for (const key in current) {
-            if (Object.prototype.hasOwnProperty.call(current, key)) {
-              const val = current[key];
-              const lowerKey = key.toLowerCase();
+      const queue = [obj];
+      const seen = new Set();
 
-              // Check keys for plan name
-              if (
-                lowerKey === "plan" ||
-                lowerKey === "plantype" ||
-                lowerKey === "plan_type" ||
-                lowerKey === "subscription" ||
-                lowerKey === "tier" ||
-                lowerKey === "sku"
-              ) {
-                if (typeof val === "string") {
-                  const lv = val.toLowerCase();
-                  if (lv.includes("team")) return "team";
-                  if (lv.includes("enterprise")) return "enterprise";
-                  if (
-                    lv.includes("plus") ||
-                    lv.includes("subscriber") ||
-                    lv.includes("premium") ||
-                    lv.includes("pro") ||
-                    lv.includes("gpt4") ||
-                    lv.includes("model_gpt4")
-                  ) {
-                    return "plus";
-                  }
-                }
-              }
+      while (queue.length > 0) {
+        const current = queue.shift();
+        if (seen.has(current)) continue;
+        seen.add(current);
 
-              // Check boolean flags
-              if (
-                lowerKey === "isplus" ||
-                lowerKey === "is_plus" ||
-                lowerKey === "plus" ||
-                lowerKey === "premium" ||
-                lowerKey === "vip"
-              ) {
+        for (const key in current) {
+          if (Object.prototype.hasOwnProperty.call(current, key)) {
+            const val = current[key];
+            const lowerKey = key.toLowerCase();
+
+            if (
+              lowerKey === "plan" ||
+              lowerKey === "plantype" ||
+              lowerKey === "plan_type" ||
+              lowerKey === "subscription" ||
+              lowerKey === "tier" ||
+              lowerKey === "sku"
+            ) {
+              if (typeof val === "string") {
+                const lv = val.toLowerCase();
+                if (lv.includes("team")) return "team";
+                if (lv.includes("enterprise")) return "enterprise";
                 if (
-                  val === true ||
-                  val === 1 ||
-                  String(val).toLowerCase() === "true"
+                  lv.includes("plus") ||
+                  lv.includes("subscriber") ||
+                  lv.includes("premium") ||
+                  lv.includes("pro") ||
+                  lv.includes("gpt4") ||
+                  lv.includes("model_gpt4")
                 ) {
                   return "plus";
                 }
               }
+            }
 
-              // Check features arrays
-              if (lowerKey === "features" || lowerKey === "groups") {
-                if (Array.isArray(val)) {
-                  if (hasPlusKeyword(val)) return "plus";
-                }
+            if (
+              lowerKey === "isplus" ||
+              lowerKey === "is_plus" ||
+              lowerKey === "plus" ||
+              lowerKey === "premium" ||
+              lowerKey === "vip"
+            ) {
+              if (
+                val === true ||
+                val === 1 ||
+                String(val).toLowerCase() === "true"
+              ) {
+                return "plus";
               }
+            }
 
-              // Push nested object
-              if (val && typeof val === "object") {
-                queue.push(val);
+            if (lowerKey === "features" || lowerKey === "groups") {
+              if (Array.isArray(val)) {
+                if (hasPlusKeyword(val)) return "plus";
               }
+            }
+
+            if (val && typeof val === "object") {
+              queue.push(val);
             }
           }
         }
-        return null;
+      }
+      return null;
+    }
+
+    function normalizeChatGPTPlan(value) {
+      const text = String(value ?? "")
+        .trim()
+        .toLowerCase();
+      if (!text) return null;
+
+      if (text === "team" || text.includes("team")) return "team";
+      if (text === "enterprise" || text.includes("enterprise")) return "enterprise";
+
+      if (
+        text === "plus" ||
+        text.includes("chatgpt_plus") ||
+        text.includes("plus") ||
+        text.includes("premium") ||
+        text.includes("paid")
+      ) {
+        return "plus";
       }
 
-      function normalizeChatGPTPlan(value) {
-        const text = String(value ?? "")
-          .trim()
-          .toLowerCase();
-        if (!text) return null;
-
-        if (text === "team" || text.includes("team")) return "team";
-        if (text === "enterprise" || text.includes("enterprise")) return "enterprise";
-
-        if (
-          text === "plus" ||
-          text.includes("chatgpt_plus") ||
-          text.includes("plus") ||
-          text.includes("premium") ||
-          text.includes("paid")
-        ) {
-          return "plus";
-        }
-
-        if (text === "free" || text.includes("free")) {
-          return "free";
-        }
-
-        return null;
+      if (text === "free" || text.includes("free")) {
+        return "free";
       }
 
-      // Auto-detect ChatGPT plan from the session JSON. Missing or unclear data uses fallbackPlan.
-      function detectChatGPTPlan(session, fallbackPlan = "plus") {
-        const fallback = normalizeFallbackPlan(fallbackPlan);
-        if (!session) return fallback;
+      return null;
+    }
 
-        const directFields = [
-          session?.account?.planType,
-          session?.account?.plan,
-          session?.user?.plan,
-          session?.plan,
-          session?.tier,
-          session?.workspace?.plan,
-          session?.subscription?.plan,
-          session?.subscription?.tier,
-          session?.subscription?.type,
-          session?.subscription?.name,
-          session?.account?.subscriptionPlan,
-        ];
+    function detectChatGPTPlan(session, fallbackPlan = "plus") {
+      const fallback = normalizeFallbackPlan(fallbackPlan);
+      if (!session) return fallback;
 
-        for (const field of directFields) {
-          const plan = normalizeChatGPTPlan(field);
-          if (plan) return plan;
-        }
+      const directFields = [
+        session?.account?.planType,
+        session?.account?.plan,
+        session?.user?.plan,
+        session?.plan,
+        session?.tier,
+        session?.workspace?.plan,
+        session?.subscription?.plan,
+        session?.subscription?.tier,
+        session?.subscription?.type,
+        session?.subscription?.name,
+        session?.account?.subscriptionPlan,
+      ];
 
-        const booleanChecks = [
-          session?.account?.isPlus,
-          session?.account?.hasPlus,
-          session?.account?.isPaid,
-          session?.account?.hasPaidSubscription,
-          session?.subscription?.active,
-          session?.subscription?.isActive,
-        ];
-
-        if (booleanChecks.some(Boolean)) {
-          return "plus";
-        }
-
-        const arraysToCheck = [
-          session.features,
-          session.user?.features,
-          session.groups,
-          session.user?.groups,
-        ];
-
-        for (const arr of arraysToCheck) {
-          if (Array.isArray(arr) && hasPlusKeyword(arr)) return "plus";
-        }
-
-        const jwtPlan = decodeJwtPlan(session.accessToken);
-        if (jwtPlan) {
-          return normalizeChatGPTPlan(jwtPlan) || fallback;
-        }
-
-        const recursivePlan = findPlanInObject(session);
-        if (recursivePlan) return recursivePlan;
-
-        return fallback;
+      for (const field of directFields) {
+        const plan = normalizeChatGPTPlan(field);
+        if (plan) return plan;
       }
 
-      // Build a connection object following 9router schema
-      function buildConnection(session, priority, fallbackPlan = "plus") {
-        const nowStr = new Date().toISOString();
+      const booleanChecks = [
+        session?.account?.isPlus,
+        session?.account?.hasPlus,
+        session?.account?.isPaid,
+        session?.account?.hasPaidSubscription,
+        session?.subscription?.active,
+        session?.subscription?.isActive,
+      ];
 
-        if (session.type === "credentials") {
-          const email = session.email;
-          const name = email.split("@")[0];
-          const accId = `acc-cred-${Math.random().toString(36).substr(2, 9)}`;
-          const detectedPlan = detectChatGPTPlan(
-            session,
-            session.plan || fallbackPlan,
-          );
-
-          return {
-            id: accId,
-            provider: "codex",
-            authType: "oauth",
-            name: name,
-            email: email,
-            accessToken: "",
-            refreshToken: null,
-            expiresAt: null,
-            idToken: null,
-            testStatus: "active",
-            expiresIn: 0,
-            providerSpecificData: {
-              chatgptAccountId: accId,
-              chatgptPlanType: detectedPlan,
-              password: session.password,
-              twoFactorSecret: session.twoFactorSecret,
-            },
-            lastUsedAt: null,
-            consecutiveUseCount: 0,
-            priority: priority,
-            isActive: true,
-            createdAt: nowStr,
-            updatedAt: nowStr,
-          };
-        }
-
-        const email = session.user?.email || "unknown@example.com";
-        const name = session.user?.name || email.split("@")[0];
-        const token = session.accessToken || "";
-        const accId =
-          session.account?.id ||
-          `acc-auto-${Math.random().toString(36).substr(2, 9)}`;
-
-        const detectedPlan = detectChatGPTPlan(session, fallbackPlan);
-
-        // Extract expiry from token payload if possible, otherwise use field "expires" or set default 30 days
-        let expiresAt = session.expires;
-        const jwtExp = decodeJwtExp(token);
-        if (jwtExp) {
-          expiresAt = new Date(jwtExp * 1000).toISOString();
-        } else if (!expiresAt) {
-          // 30 days default
-          expiresAt = new Date(
-            Date.now() + 30 * 24 * 60 * 60 * 1000,
-          ).toISOString();
-        }
-
-        return {
-          id: accId,
-          provider: "codex",
-          authType: "oauth",
-          name: name,
-          email: email,
-          accessToken: token,
-          refreshToken: null,
-          expiresAt: expiresAt,
-          idToken: null,
-          testStatus: "active",
-          expiresIn: 2592000,
-          providerSpecificData: {
-            chatgptAccountId: accId,
-            chatgptPlanType: detectedPlan,
-          },
-          lastUsedAt: null,
-          consecutiveUseCount: 0,
-          priority: priority,
-          isActive: true,
-          createdAt: nowStr,
-          updatedAt: nowStr,
-        };
+      if (booleanChecks.some(Boolean)) {
+        return "plus";
       }
 
-      function escapeHtml(value) {
-        return String(value ?? "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
+      const arraysToCheck = [
+        session.features,
+        session.user?.features,
+        session.groups,
+        session.user?.groups,
+      ];
+
+      for (const arr of arraysToCheck) {
+        if (Array.isArray(arr) && hasPlusKeyword(arr)) return "plus";
       }
 
-      function planBadgeHtml(plan) {
-        const normPlan = normalizeFallbackPlan(plan);
-        if (normPlan === "team") {
-          return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">Team</span>`;
-        }
-        if (normPlan === "enterprise") {
-          return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Enterprise</span>`;
-        }
-        return normPlan === "plus"
-          ? `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-violet-500/20 text-violet-400 border border-violet-500/30">Plus</span>`
-          : `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 border border-transparent">Free</span>`;
+      const jwtPlan = decodeJwtPlan(session.accessToken);
+      if (jwtPlan) {
+        return normalizeChatGPTPlan(jwtPlan) || fallback;
       }
 
-      function setDownloadState(enabled, statusText) {
-        const downloadBtn = $("download-btn");
-        downloadBtn.disabled = !enabled;
-        downloadBtn.className = enabled
-          ? DOWNLOAD_ENABLED_CLASS
-          : DOWNLOAD_DISABLED_CLASS;
-        $("export-status").innerText = statusText;
+      const recursivePlan = findPlanInObject(session);
+      if (recursivePlan) return recursivePlan;
+
+      return fallback;
+    }
+
+    function buildConnection(session, priority, fallbackPlan = "plus") {
+      const nowStr = new Date().toISOString();
+
+      const email = session.user?.email || "unknown@example.com";
+      const name = session.user?.name || email.split("@")[0];
+      const token = session.accessToken || "";
+      const accId =
+        session.account?.id ||
+        `acc-auto-${Math.random().toString(36).substr(2, 9)}`;
+
+      const detectedPlan = detectChatGPTPlan(session, fallbackPlan);
+
+      let expiresAt = session.expires;
+      const jwtExp = decodeJwtExp(token);
+      if (jwtExp) {
+        expiresAt = new Date(jwtExp * 1000).toISOString();
+      } else if (!expiresAt) {
+        expiresAt = new Date(
+          Date.now() + 30 * 24 * 60 * 60 * 1000,
+        ).toISOString();
       }
 
-      function copyButtonHtml(index, field, title, iconPath) {
-        return `
+      return {
+        id: accId,
+        provider: "codex",
+        authType: "oauth",
+        name: name,
+        email: email,
+        accessToken: token,
+        refreshToken: null,
+        expiresAt: expiresAt,
+        idToken: null,
+        testStatus: "active",
+        expiresIn: 2592000,
+        providerSpecificData: {
+          chatgptAccountId: accId,
+          chatgptPlanType: detectedPlan,
+        },
+        lastUsedAt: null,
+        consecutiveUseCount: 0,
+        priority: priority,
+        isActive: true,
+        createdAt: nowStr,
+        updatedAt: nowStr,
+      };
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function planBadgeHtml(plan) {
+      const normPlan = normalizeFallbackPlan(plan);
+      if (normPlan === "team") {
+        return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">Team</span>`;
+      }
+      if (normPlan === "enterprise") {
+        return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Enterprise</span>`;
+      }
+      return normPlan === "plus"
+        ? `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-violet-500/20 text-violet-400 border border-violet-500/30">Plus</span>`
+        : `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 border border-transparent">Free</span>`;
+    }
+
+    function setDownloadState(enabled, statusText) {
+      const downloadBtn = $("download-btn");
+      downloadBtn.disabled = !enabled;
+      downloadBtn.className = enabled
+        ? DOWNLOAD_ENABLED_CLASS
+        : DOWNLOAD_DISABLED_CLASS;
+      $("export-status").innerText = statusText;
+    }
+
+    function copyButtonHtml(index, field, title, iconPath) {
+      return `
           <button onclick="copyConnectionSecret(${index}, '${field}')" class="p-1.5 text-slate-400 hover:text-indigo-400 bg-slate-900 rounded-lg border border-slate-800 hover:border-indigo-500/30 transition duration-150" title="${title}">
             <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="${iconPath}" />
             </svg>
           </button>
         `;
+    }
+
+    function actionCellHtml(conn, index) {
+      const tokenIcon =
+        "M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3";
+      return `<div class="flex justify-center">${copyButtonHtml(index, "token", "Copy Access Token", tokenIcon)}</div>`;
+    }
+
+    function renderUI(connections, skippedCount, hasErrorInput = false) {
+      const tbody = $("preview-tbody");
+
+      $("stat-valid").innerText = connections.length;
+      $("stat-skipped").innerText = skippedCount;
+
+      if (connections.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-500">Chưa có tài khoản nào được phân tích. Hãy dán JSON session ở cột bên trái.</td></tr>`;
+        setDownloadState(
+          false,
+          hasErrorInput
+            ? "Phát hiện lỗi cú pháp đầu vào."
+            : "Chờ nhập dữ liệu...",
+        );
+        return;
       }
 
-      function actionCellHtml(conn, index) {
-        const passwordIcon =
-          "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z";
-        const tokenIcon =
-          "M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3";
-        const mfaIcon =
-          "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z";
+      tbody.innerHTML = "";
+      connections.forEach((conn, index) => {
+        const planBadge = planBadgeHtml(
+          conn.providerSpecificData?.chatgptPlanType,
+        );
 
-        const hasPassword = conn.password || conn.providerSpecificData?.password;
-        if (!hasPassword && conn.accessToken) {
-          return `<div class="flex justify-center">${copyButtonHtml(index, "token", "Copy Access Token", tokenIcon)}</div>`;
-        }
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-900/30 transition duration-100";
 
-        const hasMfa = conn.twoFactorSecret || conn.providerSpecificData?.twoFactorSecret;
-        const mfaButton = hasMfa
-          ? copyButtonHtml(index, "mfa", "Copy 2FA Secret", mfaIcon)
-          : "";
-        return `
-          <div class="flex space-x-1 justify-center">
-            ${copyButtonHtml(index, "password", "Copy Mật khẩu", passwordIcon)}
-            ${mfaButton}
-          </div>
-        `;
-      }
+        const expiryHtml = escapeHtml(formatDate(conn.expiresAt));
+        const actionBtnHtml = actionCellHtml(conn, index);
 
-      function renderUI(connections, skippedCount, hasErrorInput = false) {
-        const tbody = $("preview-tbody");
-
-        $("stat-valid").innerText = connections.length;
-        $("stat-skipped").innerText = skippedCount;
-
-        if (connections.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-500">Chưa có tài khoản nào được phân tích. Hãy dán JSON session hoặc Tài khoản|Mật khẩu|2FA ở cột bên trái.</td></tr>`;
-          setDownloadState(
-            false,
-            hasErrorInput
-              ? "Phát hiện lỗi cú pháp đầu vào."
-              : "Chờ nhập dữ liệu...",
-          );
-          return;
-        }
-
-        tbody.innerHTML = "";
-        connections.forEach((conn, index) => {
-          const planBadge = planBadgeHtml(
-            conn.providerSpecificData?.chatgptPlanType,
-          );
-
-          const tr = document.createElement("tr");
-          tr.className = "hover:bg-slate-900/30 transition duration-100";
-
-          const hasPassword = conn.password || conn.providerSpecificData?.password;
-          const expiryHtml =
-            (!conn.accessToken && hasPassword)
-              ? `<span class="text-slate-500 italic text-[10px]">Đăng nhập bằng Pass</span>`
-              : escapeHtml(formatDate(conn.expiresAt));
-          const actionBtnHtml = actionCellHtml(conn, index);
-
-          tr.innerHTML = `
+        tr.innerHTML = `
                     <td class="p-3 text-center text-slate-400 font-mono">${index + 1}</td>
                     <td class="p-3">
                         <div class="font-medium text-slate-200">${escapeHtml(conn.name)}</div>
@@ -1303,285 +1040,436 @@ tai_khoan_2@gmail.com|mat_khau_2</pre
                     <td class="p-3 text-slate-400 font-mono text-[10px]">${expiryHtml}</td>
                     <td class="p-3 text-center">${actionBtnHtml}</td>
                 `;
-          tbody.appendChild(tr);
+        tbody.appendChild(tr);
+      });
+
+      setDownloadState(
+        true,
+        `Sẵn sàng xuất file cấu hình ${connections.length} tài khoản.`,
+      );
+    }
+
+    function copyConnectionSecret(index, field) {
+      const conn = parsedConnections[index];
+      if (!conn) return;
+
+      const values = {
+        token: [conn.accessToken || "", "Access Token"],
+      };
+      const [value, label] = values[field] || ["", "Dữ liệu"];
+      copyText(value, label);
+    }
+
+    function copyText(text, label) {
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          alert(`Đã copy ${label} vào bộ nhớ tạm.`);
+        })
+        .catch((err) => {
+          console.error("Lỗi copy:", err);
+        });
+    }
+
+    function processInput() {
+      const valIndicator = $("validation-indicator");
+      const errAlert = $("error-alert");
+      const inputVal = $("session-input").value;
+      const fallbackPlan = DEFAULT_FALLBACK_PLAN;
+
+      errAlert.classList.add("hidden");
+      parsedConnections = [];
+
+      if (!inputVal.trim()) {
+        valIndicator.innerText = "Trống";
+        valIndicator.className = EMPTY_INDICATOR_CLASS;
+        renderUI([], 0);
+        return;
+      }
+
+      try {
+        const { isJson, parsed, skipped } = parseInputItems(
+          inputVal,
+          fallbackPlan,
+        );
+
+        parsed.forEach((item, i) => {
+          const conn = buildConnection(item, i + 1, fallbackPlan);
+          parsedConnections.push(conn);
         });
 
-        setDownloadState(
-          true,
-          `Sẵn sàng xuất file cấu hình ${connections.length} tài khoản.`,
+        valIndicator.innerText = isJson ? "JSON Hợp lệ" : "Text Hợp lệ";
+        valIndicator.className = VALID_INDICATOR_CLASS;
+        renderUI(parsedConnections, skipped);
+      } catch (e) {
+        valIndicator.innerText = "Lỗi";
+        valIndicator.className = ERROR_INDICATOR_CLASS;
+        errAlert.innerText = e.message;
+        errAlert.classList.remove("hidden");
+        renderUI([], 0, true);
+      }
+    }
+
+    function loadSampleData() {
+      const sampleJson = [
+        {
+          user: {
+            id: "user-u347f8s7fd78a",
+            name: "Nguyễn Hoàng Minh",
+            email: "hoangminh.chatgpt@gmail.com",
+          },
+          expires: "2026-06-21T03:20:00.000Z",
+          accessToken:
+            "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODIwOTkyMDAsImVtYWlsIjoiaG9hbmduaW5oLmNoYXRncHRAZ21haWwuY29tIiwicGxhbiI6InBsdXMifQ.sample_signature_1",
+          account: {
+            id: "acc-premium-9router-1",
+            planType: "plus",
+          },
+        },
+        {
+          user: {
+            id: "user-m89423r78fdfd",
+            name: "Lê Văn Tám",
+            email: "tamle.free@hotmail.com",
+          },
+          expires: "2026-06-25T14:40:00.000Z",
+          accessToken:
+            "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODIyNzIwMDAsImVtYWlsIjoidGFtbGUuZnJlZUBob3RtYWlsLmNvbSIsInBsYW4iOiJmcmVlIn0.sample_signature_2",
+          account: {
+            id: "acc-free-9router-2",
+            planType: "free",
+          },
+        },
+      ];
+
+      $("session-input").value = JSON.stringify(sampleJson, null, 2);
+      processInput();
+    }
+
+    function clearInput() {
+      $("session-input").value = "";
+      processInput();
+    }
+
+    function processMerge() {
+      const mergeInputVal = $("session-merge-input").value;
+      const mergeErrAlert = $("merge-error-alert");
+      const fallbackPlan = DEFAULT_FALLBACK_PLAN;
+
+      mergeErrAlert.classList.add("hidden");
+      parsedConnections = [];
+
+      let resultList = [...uploadedConnections];
+
+      if (!mergeInputVal.trim()) {
+        parsedConnections = resultList;
+        renderUI(parsedConnections, 0);
+        return;
+      }
+
+      try {
+        let priorityCounter = baseMaxPriority;
+        const { parsed: newItems, skipped: skippedInput } = parseInputItems(
+          mergeInputVal,
+          fallbackPlan,
         );
-      }
+        let skipped = skippedInput;
 
-      function copyConnectionSecret(index, field) {
-        const conn = parsedConnections[index];
-        if (!conn) return;
+        newItems.forEach((item) => {
+          const isCred = item.type === "credentials";
+          const email = isCred ? item.email : item.user?.email || "";
+          const accId = isCred ? `acc-cred-${email}` : item.account?.id || "";
 
-        const values = {
-          password: [
-            conn.password || conn.providerSpecificData?.password || "",
-            "Mật khẩu",
-          ],
-          mfa: [
-            conn.twoFactorSecret || conn.providerSpecificData?.twoFactorSecret || "", 
-            "Mã 2FA"
-          ],
-          token: [conn.accessToken || "", "Access Token"],
-        };
-        const [value, label] = values[field] || ["", "Dữ liệu"];
-        copyText(value, label);
-      }
-
-      function copyText(text, label) {
-        navigator.clipboard
-          .writeText(text)
-          .then(() => {
-            alert(`Đã copy ${label} vào bộ nhớ tạm.`);
-          })
-          .catch((err) => {
-            console.error("Lỗi copy:", err);
-          });
-      }
-
-      function processInput() {
-        const valIndicator = $("validation-indicator");
-        const errAlert = $("error-alert");
-        const inputVal = $("session-input").value;
-        const fallbackPlan = DEFAULT_FALLBACK_PLAN;
-
-        errAlert.classList.add("hidden");
-        parsedConnections = [];
-
-        if (!inputVal.trim()) {
-          valIndicator.innerText = "Trống";
-          valIndicator.className = EMPTY_INDICATOR_CLASS;
-          renderUI([], 0);
-          return;
-        }
-
-        try {
-          const { isJson, parsed, skipped } = parseInputItems(
-            inputVal,
-            fallbackPlan,
-          );
-
-          parsed.forEach((item, i) => {
-            const conn = buildConnection(item, i + 1, fallbackPlan);
-            parsedConnections.push(conn);
-          });
-
-          valIndicator.innerText = isJson ? "JSON Hợp lệ" : "Text Hợp lệ";
-          valIndicator.className = VALID_INDICATOR_CLASS;
-          renderUI(parsedConnections, skipped);
-        } catch (e) {
-          valIndicator.innerText = "Lỗi";
-          valIndicator.className = ERROR_INDICATOR_CLASS;
-          errAlert.innerText = e.message;
-          errAlert.classList.remove("hidden");
-          renderUI([], 0, true);
-        }
-      }
-
-      // Load Sample JSON Session Data
-      function loadSampleData() {
-        const sampleJson = [
-          {
-            user: {
-              id: "user-u347f8s7fd78a",
-              name: "Nguyễn Hoàng Minh",
-              email: "hoangminh.chatgpt@gmail.com",
-            },
-            expires: "2026-06-21T03:20:00.000Z",
-            accessToken:
-              "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODIwOTkyMDAsImVtYWlsIjoiaG9hbmduaW5oLmNoYXRncHRAZ21haWwuY29tIiwicGxhbiI6InBsdXMifQ.sample_signature_1",
-            account: {
-              id: "acc-premium-9router-1",
-              planType: "plus",
-            },
-          },
-          {
-            user: {
-              id: "user-m89423r78fdfd",
-              name: "Lê Văn Tám",
-              email: "tamle.free@hotmail.com",
-            },
-            expires: "2026-06-25T14:40:00.000Z",
-            accessToken:
-              "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODIyNzIwMDAsImVtYWlsIjoidGFtbGUuZnJlZUBob3RtYWlsLmNvbSIsInBsYW4iOiJmcmVlIn0.sample_signature_2",
-            account: {
-              id: "acc-free-9router-2",
-              planType: "free",
-            },
-          },
-        ];
-
-        $("session-input").value = JSON.stringify(sampleJson, null, 2);
-        processInput();
-      }
-
-      function clearInput() {
-        $("session-input").value = "";
-        processInput();
-      }
-
-      function processMerge() {
-        const mergeInputVal = $("session-merge-input").value;
-        const mergeErrAlert = $("merge-error-alert");
-        const fallbackPlan = DEFAULT_FALLBACK_PLAN;
-
-        mergeErrAlert.classList.add("hidden");
-        parsedConnections = [];
-
-        let resultList = [...uploadedConnections];
-
-        if (!mergeInputVal.trim()) {
-          parsedConnections = resultList;
-          renderUI(parsedConnections, 0);
-          return;
-        }
-
-        try {
-          let priorityCounter = baseMaxPriority;
-          const { parsed: newItems, skipped: skippedInput } = parseInputItems(
-            mergeInputVal,
-            fallbackPlan,
-          );
-          let skipped = skippedInput;
-
-          newItems.forEach((item) => {
-            const isCred = item.type === "credentials";
-            const email = isCred ? item.email : item.user?.email || "";
-            const accId = isCred ? `acc-cred-${email}` : item.account?.id || "";
-
-            // Check duplicate acc ID or email to avoid double import
-            const isDuplicate = resultList.some((conn) => {
-              if (isCred) {
-                return conn.email === email;
-              } else {
-                return conn.id === accId || (email && conn.email === email);
-              }
-            });
-
-            if (!isDuplicate) {
-              priorityCounter++;
-              const conn = buildConnection(item, priorityCounter, fallbackPlan);
-              resultList.push(conn);
+          const isDuplicate = resultList.some((conn) => {
+            if (isCred) {
+              return conn.email === email;
             } else {
-              skipped++;
+              return conn.id === accId || (email && conn.email === email);
             }
           });
 
-          parsedConnections = resultList;
-          renderUI(parsedConnections, skipped);
-        } catch (e) {
-          mergeErrAlert.innerText = e.message;
-          mergeErrAlert.classList.remove("hidden");
-          renderUI(uploadedConnections, 0, true);
-        }
-      }
-
-      function clearMergeInput() {
-        $("session-merge-input").value = "";
-        processMerge();
-      }
-
-      function loadBackupJsonContent(text) {
-        try {
-          const data = JSON.parse(text);
-          if (
-            data &&
-            typeof data === "object" &&
-            Array.isArray(data.providerConnections)
-          ) {
-            uploadedBackupData = data;
-            uploadedConnections = data.providerConnections;
-
-            baseMaxPriority = 0;
-            uploadedConnections.forEach((conn) => {
-              if (conn.priority && conn.priority > baseMaxPriority) {
-                baseMaxPriority = conn.priority;
-              }
-            });
-
-            $("file-status").classList.remove("hidden");
-            $("file-detail").innerText =
-              `${uploadedConnections.length} tài khoản • độ ưu tiên lớn nhất: ${baseMaxPriority}`;
-
-            processMerge();
+          if (!isDuplicate) {
+            priorityCounter++;
+            const conn = buildConnection(item, priorityCounter, fallbackPlan);
+            resultList.push(conn);
           } else {
-            alert(
-              "Cấu trúc file backup 9router không đúng (phải có mảng providerConnections).",
-            );
+            skipped++;
           }
-        } catch (e) {
-          alert(`Lỗi đọc file JSON: ${e.message}`);
-        }
-      }
-
-      function handleFileSelect(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        $("file-name").innerText = file.name;
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          loadBackupJsonContent(e.target.result);
-        };
-        reader.readAsText(file);
-      }
-
-      function handleFileDrop(event) {
-        event.preventDefault();
-        $("drop-zone").classList.remove("border-indigo-500");
-        const file = event.dataTransfer.files[0];
-        if (!file) return;
-        $("file-name").innerText = file.name;
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          loadBackupJsonContent(e.target.result);
-        };
-        reader.readAsText(file);
-      }
-
-      function clearUploadedFile() {
-        $("file-input").value = "";
-        $("file-status").classList.add("hidden");
-        uploadedBackupData = null;
-        uploadedConnections = [];
-        baseMaxPriority = 0;
-        processMerge();
-      }
-
-      function triggerDownload() {
-        let finalOutput = {};
-
-        if (currentTab === "create") {
-          finalOutput = {
-            settings: DEFAULT_SETTINGS,
-            providerConnections: parsedConnections,
-          };
-        } else {
-          finalOutput = {
-            settings: uploadedBackupData?.settings || DEFAULT_SETTINGS,
-            providerConnections: parsedConnections,
-          };
-        }
-
-        const filename =
-          currentTab === "create"
-            ? "ttmdigital_9router_backup_new.json"
-            : "ttmdigital_9router_backup_merged.json";
-
-        const blob = new Blob([JSON.stringify(finalOutput, null, 2)], {
-          type: "application/json",
         });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+
+        parsedConnections = resultList;
+        renderUI(parsedConnections, skipped);
+      } catch (e) {
+        mergeErrAlert.innerText = e.message;
+        mergeErrAlert.classList.remove("hidden");
+        renderUI(uploadedConnections, 0, true);
       }
-    </script>
-  </body>
+    }
+
+    function clearMergeInput() {
+      $("session-merge-input").value = "";
+      processMerge();
+    }
+
+    function loadBackupJsonContent(text) {
+      try {
+        const data = JSON.parse(text);
+        if (
+          data &&
+          typeof data === "object" &&
+          Array.isArray(data.providerConnections)
+        ) {
+          uploadedBackupData = data;
+          uploadedConnections = data.providerConnections;
+
+          baseMaxPriority = 0;
+          uploadedConnections.forEach((conn) => {
+            if (conn.priority && conn.priority > baseMaxPriority) {
+              baseMaxPriority = conn.priority;
+            }
+          });
+
+          $("file-status").classList.remove("hidden");
+          $("file-detail").innerText =
+            `${uploadedConnections.length} tài khoản • độ ưu tiên lớn nhất: ${baseMaxPriority}`;
+
+          processMerge();
+        } else {
+          alert(
+            "Cấu trúc file backup 9router không đúng (phải có mảng providerConnections).",
+          );
+        }
+      } catch (e) {
+        alert(`Lỗi đọc file JSON: ${e.message}`);
+      }
+    }
+
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      $("file-name").innerText = file.name;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        loadBackupJsonContent(e.target.result);
+      };
+      reader.readAsText(file);
+    }
+
+    function handleFileDrop(event) {
+      event.preventDefault();
+      $("drop-zone").classList.remove("border-indigo-500");
+      const file = event.dataTransfer.files[0];
+      if (!file) return;
+      $("file-name").innerText = file.name;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        loadBackupJsonContent(e.target.result);
+      };
+      reader.readAsText(file);
+    }
+
+    function clearUploadedFile() {
+      $("file-input").value = "";
+      $("file-status").classList.add("hidden");
+      uploadedBackupData = null;
+      uploadedConnections = [];
+      baseMaxPriority = 0;
+      processMerge();
+    }
+
+    function triggerDownload() {
+      let finalOutput = {};
+
+      if (currentTab === "create" || currentTab === "auto") {
+        finalOutput = {
+          settings: DEFAULT_SETTINGS,
+          providerConnections: parsedConnections,
+        };
+      } else {
+        finalOutput = {
+          settings: uploadedBackupData?.settings || DEFAULT_SETTINGS,
+          providerConnections: parsedConnections,
+        };
+      }
+
+      const filename =
+        currentTab === "create" || currentTab === "auto"
+          ? "ttmdigital_9router_backup_new.json"
+          : "ttmdigital_9router_backup_merged.json";
+
+      const blob = new Blob([JSON.stringify(finalOutput, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    /* =========================================
+       LOGIC TỰ ĐỘNG GET SESSION QUA PROXY API (Standalone JSON Generator)
+       ========================================= */
+
+    let generatedSessions = [];
+
+    function clearAutoInput() {
+      $("auto-input").value = "";
+      $("auto-progress-container").classList.add("hidden");
+      $("auto-log-container").classList.add("hidden");
+      $("auto-result-container").classList.add("hidden");
+      $("auto-log-container").innerHTML = "";
+      $("auto-result-json").value = "";
+      generatedSessions = [];
+    }
+
+    function appendAutoLog(type, message) {
+      const logContainer = $("auto-log-container");
+      logContainer.classList.remove("hidden");
+      const color = type === 'error' ? 'text-rose-400' : 'text-emerald-400';
+      const bg = type === 'error' ? 'bg-rose-500/10' : 'bg-emerald-500/10';
+      const el = document.createElement("div");
+      el.className = `p-2 rounded ${bg} ${color} text-[10px] font-mono`;
+      el.innerText = message;
+      logContainer.appendChild(el);
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+
+    function copyAutoResult() {
+      const text = $("auto-result-json").value;
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Đã copy toàn bộ JSON!");
+      }).catch(err => {
+        console.error("Lỗi copy:", err);
+      });
+    }
+
+    async function startAutoGetSession() {
+      const inputVal = $("auto-input").value.trim();
+      $("auto-log-container").innerHTML = "";
+      $("auto-result-container").classList.add("hidden");
+      $("auto-result-json").value = "";
+      generatedSessions = [];
+
+      if (!inputVal) {
+        alert("Vui lòng nhập danh sách tài khoản.");
+        return;
+      }
+
+      const lines = inputVal.split("\n").map(l => l.trim()).filter(l => l);
+      if (lines.length === 0) return;
+
+      const btn = $("btn-start-auto");
+      btn.disabled = true;
+      btn.classList.add("opacity-50", "cursor-not-allowed");
+
+      $("auto-progress-container").classList.remove("hidden");
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const parts = line.split("|");
+
+        $("auto-status-text").innerText = `Đang xử lý: ${i + 1}/${lines.length}`;
+        const percent = Math.round(((i + 1) / lines.length) * 100);
+        $("auto-percent").innerText = `${percent}%`;
+        $("auto-progress-bar").style.width = `${percent}%`;
+
+        if (parts.length < 2) {
+          appendAutoLog('error', `[Dòng ${i + 1}] Định dạng sai: ${line}`);
+          continue;
+        }
+
+        const username = parts[0].trim();
+        const password = parts[1].trim();
+        const twoFactorSecret = parts[2] ? parts[2].trim() : null;
+
+        let totpCode = "";
+        if (twoFactorSecret && typeof window.OTPAuth !== 'undefined') {
+          try {
+            let totp = new window.OTPAuth.TOTP({
+              issuer: "OpenAI",
+              label: username,
+              algorithm: "SHA1",
+              digits: 6,
+              period: 30,
+              secret: twoFactorSecret
+            });
+            totpCode = totp.generate();
+          } catch (e) {
+            appendAutoLog('error', `[${username}] Lỗi tạo TOTP: ${e.message}`);
+          }
+        }
+
+        appendAutoLog('success', `[${username}] Đang đăng nhập...`);
+
+        try {
+          const proxyUrl = $("proxy-url-input").value.trim() || "https://ai.fakeopen.com/auth/login";
+          const useCorsProxy = $("use-cors-proxy").checked;
+          const result = await fetchProxyLogin(proxyUrl, useCorsProxy, username, password, totpCode);
+
+          if (result.success && result.session) {
+            generatedSessions.push(result.session);
+            appendAutoLog('success', `[${username}] Lấy Session thành công!`);
+          } else {
+            appendAutoLog('error', `[${username}] Thất bại: ${result.error || 'Lỗi không xác định'}`);
+          }
+        } catch (err) {
+          appendAutoLog('error', `[${username}] Lỗi kết nối: ${err.message}`);
+        }
+
+        if (i < lines.length - 1) {
+          await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+
+      btn.disabled = false;
+      btn.classList.remove("opacity-50", "cursor-not-allowed");
+      $("auto-status-text").innerText = "Hoàn tất!";
+
+      if (generatedSessions.length > 0) {
+        $("auto-result-container").classList.remove("hidden");
+        $("auto-result-json").value = JSON.stringify(generatedSessions, null, 2);
+      } else {
+        appendAutoLog('error', `Không lấy được session nào hợp lệ.`);
+      }
+    }
+
+    async function fetchProxyLogin(proxyUrl, useCorsProxy, username, password, mfaCode) {
+      try {
+        const bodyData = { username, password };
+        if (mfaCode) bodyData.mfa_code = mfaCode;
+
+        // Định tuyến qua CORS Proxy nếu bật
+        const finalUrl = useCorsProxy ? `https://corsproxy.io/?${encodeURIComponent(proxyUrl)}` : proxyUrl;
+
+        const response = await fetch(finalUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(bodyData).toString()
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.access_token) {
+           return {
+              success: true,
+              session: {
+                 user: { email: username, name: username.split('@')[0] },
+                 accessToken: result.access_token,
+                 account: { id: "acc-auto-" + Date.now(), planType: "plus" }
+              }
+           };
+        }
+        return { success: false, error: result.detail || result.error || "Lỗi đăng nhập (Sai pass/2FA hoặc IP bị chặn)" };
+      } catch (e) {
+         return { success: false, error: "Lỗi kết nối API: " + e.message + " (Có thể do CORS hoặc mạng)" };
+      }
+    }
+  </script>
+</body>
+
 </html>
